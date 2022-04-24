@@ -26,12 +26,18 @@ export class URLController {
     // pegar o hash da URL
     const { hash } = req.params;
     // encontrar a URL original pelo hash
-    const url = {
-      "originURL": "https://g1.globo.com/rj/rio-de-janeiro/carnaval/2022/noticia/2022/04/24/princesa-da-tuiuti-nega-que-tenha-ficado-com-genitalia-desnuda-na-sapucai-calcinha-marrom.ghtml",
-      "hash": "rdK15_3gt",
-      "shortURL": "http://localhost:3001/rdK15_3gt"
+    const url = await URLModel.findOne({ hash });
+
+    if(url) {
+      res.redirect(url.originURL);
+      return
     }
+    // const url = {
+    //   "originURL": "https://g1.globo.com/rj/rio-de-janeiro/carnaval/2022/noticia/2022/04/24/princesa-da-tuiuti-nega-que-tenha-ficado-com-genitalia-desnuda-na-sapucai-calcinha-marrom.ghtml",
+    //   "hash": "rdK15_3gt",
+    //   "shortURL": "http://localhost:3001/rdK15_3gt"
+    // }
     // redirecionar para a URL original a partir do que foi encontrado no banco
-    res.redirect(url.originURL);
+    res.status(404).json({ message: "URL not found!" });
   }
 }

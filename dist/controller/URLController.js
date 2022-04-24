@@ -34,12 +34,12 @@ class URLController {
     redirect(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { hash } = req.params;
-            const url = {
-                "originURL": "https://g1.globo.com/rj/rio-de-janeiro/carnaval/2022/noticia/2022/04/24/princesa-da-tuiuti-nega-que-tenha-ficado-com-genitalia-desnuda-na-sapucai-calcinha-marrom.ghtml",
-                "hash": "rdK15_3gt",
-                "shortURL": "http://localhost:3001/rdK15_3gt"
-            };
-            res.redirect(url.originURL);
+            const url = yield URL_1.URLModel.findOne({ hash });
+            if (url) {
+                res.redirect(url.originURL);
+                return;
+            }
+            res.status(404).json({ message: "URL not found!" });
         });
     }
 }
